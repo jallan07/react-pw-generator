@@ -14,7 +14,7 @@ const PwLengthSlider = ({
   onChange
 }) => {
   return (
-    <Container className="px-1">
+    <Container className="px-5">
       <RangeSlider
         value={value}
         tooltipLabel={tooltipLabel}
