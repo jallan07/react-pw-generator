@@ -5,7 +5,10 @@ import PwLengthSlider from './PwLengthSlider';
 function PasswordGenerator() {
   // establish the length state object
   const [lengthState, setLengthState] = useState(18);
-  const [charSetState, setCharSetState] = useState({});
+  const [charSetState, setCharSetState] = useState({
+    lowers: true,
+    numbers: true
+  });
   const [passwordState, setPasswordState] = useState('');
 
   const generatePw = () => {
@@ -33,7 +36,6 @@ function PasswordGenerator() {
     let generatedPw = await generatePw();
     await setPasswordState(generatedPw);
   };
-  console.log(passwordState);
 
   return (
     <>
@@ -44,12 +46,14 @@ function PasswordGenerator() {
         <Row>
           <Form.Group className="d-flex justify-content-center mx-auto">
             <Form.Check
+              defaultChecked={true}
               className="mx-3 col-md-6"
               type="switch"
               id="uppercase"
               label="UPPERCASE"
             />
             <Form.Check
+              defaultChecked={true}
               className="mx-3 col-md-6"
               type="switch"
               id="numbers"
@@ -60,13 +64,14 @@ function PasswordGenerator() {
         <Row>
           <Form.Group className="d-flex justify-content-center mx-auto">
             <Form.Check
+              defaultChecked={true}
               className="mx-3 col-md-6"
               type="switch"
               id="lowercase"
               label="LOWERCASE"
-              onClick={(e) => setCharSetState({ lowers: e.target.value })}
             />
             <Form.Check
+              defaultChecked={true}
               className="mx-3 col-md-6"
               type="switch"
               id="symbols"
@@ -84,7 +89,9 @@ function PasswordGenerator() {
             size="lg"
             variant="warning"
             tooltip="on"
-            onChange={(changeEvent) => setLengthState(changeEvent.target.value)}
+            onChange={(changeEvent) =>
+              setLengthState(changeEvent.currentTarget.value)
+            }
           />
         </Row>
         <Row className="my-5 d-flex justify-content-center">
