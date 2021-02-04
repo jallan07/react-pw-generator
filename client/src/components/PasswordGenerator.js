@@ -1,98 +1,128 @@
 import React, { useState } from 'react';
-import { Form, Row, Button } from 'react-bootstrap';
+import { Form, Row, Button, Container } from 'react-bootstrap';
 import PwLengthSlider from './PwLengthSlider';
+import CharSetToggle from './CharSetToggle';
+import RandomCharSelect from './RandomCharSelect';
+import hsimp from 'hsimp';
 
 function PasswordGenerator() {
   // establish the length state object
   const [lengthState, setLengthState] = useState(18);
   const [charSetState, setCharSetState] = useState({
-    lowers: true,
-    numbers: true
+    uppercase: true,
+    lowercase: true,
+    numbers: true,
+    symbols: true
   });
   const [passwordState, setPasswordState] = useState('');
 
-  const generatePw = () => {
-    let password = '';
-
-    const symbols = '!@#$%^&*()+_-=.,/|~`';
-    const lowers = 'abcdefghijklmnopqrstuvwxyz';
-    const uppers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const generatePw = async () => {
+    let charSet = '';
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
     const numbers = '01234567890';
+    const symbols = '!@#$%^&*()+_-=.,/|~`';
 
-    let charSet = charSetState;
-    console.log(charSet);
+    if (charSetState.uppercase) {
+      charSet += uppercase;
+    }
+    if (charSetState.lowercase) {
+      charSet += lowercase;
+    }
+    if (charSetState.numbers) {
+      charSet += numbers;
+    }
+    if (charSetState.symbols) {
+      charSet += symbols;
+    }
 
-    // set the password length to the length state
-    let pwLength = lengthState;
-    console.log(pwLength);
-
-    password = 'test';
-
+    let password = await RandomCharSelect(lengthState, charSet);
+    setPasswordState(password);
+    let securityCheck = await hsimp(password);
+    console.log(securityCheck);
     return password;
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    let generatedPw = await generatePw();
-    await setPasswordState(generatedPw);
+    generatePw();
   };
 
   return (
     <>
       <Form>
         <Form.Group>
-          <Form.Control size="lg" type="text" readOnly />
+          <h4 className="py-2 text-center">
+            {passwordState ? passwordState : '*************'}
+          </h4>
         </Form.Group>
         <Row>
           <Form.Group className="d-flex justify-content-center mx-auto">
-            <Form.Check
-              defaultChecked={true}
+            <CharSetToggle
+              defaultChecked={charSetState.uppercase}
               className="mx-3 col-md-6"
               type="switch"
               id="uppercase"
               label="UPPERCASE"
+              onClick={() => {
+                let upperToggle = !charSetState.uppercase;
+                console.log(upperToggle);
+                setCharSetState({ ...charSetState, uppercase: upperToggle });
+              }}
             />
-            <Form.Check
-              defaultChecked={true}
+            <CharSetToggle
+              defaultChecked={charSetState.numbers}
               className="mx-3 col-md-6"
               type="switch"
               id="numbers"
               label="NUMBERS"
+              onClick={() => {
+                let numberToggle = !charSetState.numbers;
+                console.log(numberToggle);
+                setCharSetState({ ...charSetState, numbers: numberToggle });
+              }}
             />
           </Form.Group>
         </Row>
         <Row>
           <Form.Group className="d-flex justify-content-center mx-auto">
-            <Form.Check
-              defaultChecked={true}
+            <CharSetToggle
+              defaultChecked={charSetState.lowercase}
               className="mx-3 col-md-6"
               type="switch"
               id="lowercase"
               label="LOWERCASE"
+              onClick={() => {
+                let lowerToggle = !charSetState.lowercase;
+                console.log(lowerToggle);
+                setCharSetState({ ...charSetState, lowercase: lowerToggle });
+              }}
             />
-            <Form.Check
-              defaultChecked={true}
+            <CharSetToggle
+              defaultChecked={charSetState.symbols}
               className="mx-3 col-md-6"
               type="switch"
               id="symbols"
               label="SYMBOLS"
+              onClick={() => {
+                let symbolToggle = !charSetState.symbols;
+                console.log(symbolToggle);
+                setCharSetState({ ...charSetState, symbols: symbolToggle });
+              }}
             />
           </Form.Group>
         </Row>
         <Row>
           {/* pull in the PwLengthSlider component and pass in props */}
-          <PwLengthSlider
-            value={lengthState}
-            tooltipLabel={(label) => <p>Password Length: {lengthState}</p>}
-            min={8}
-            max={28}
-            size="lg"
-            variant="warning"
-            tooltip="on"
-            onChange={(changeEvent) =>
-              setLengthState(changeEvent.currentTarget.value)
-            }
-          />
+          <Container className="mx-3 pt-3 d-flex">
+            <PwLengthSlider
+              value={lengthState}
+              tooltipLabel={(label) => <p>Password Length: {lengthState}</p>}
+              onChange={(changeEvent) =>
+                setLengthState(changeEvent.currentTarget.value)
+              }
+            />
+          </Container>
         </Row>
         <Row className="my-5 d-flex justify-content-center">
           <Button

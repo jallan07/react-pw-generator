@@ -3,26 +3,17 @@ import { Container } from 'react-bootstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
-const PwLengthSlider = ({
-  value,
-  tooltipLabel,
-  min,
-  max,
-  size,
-  variant,
-  tooltip,
-  onChange
-}) => {
+const PwLengthSlider = ({ value, tooltipLabel, onChange }) => {
   return (
-    <Container className="px-5">
+    <Container className="w-100">
       <RangeSlider
         value={value}
         tooltipLabel={tooltipLabel}
-        min={min}
-        max={max}
-        size={size}
-        variant={variant}
-        tooltip={tooltip}
+        min={8}
+        max={36}
+        size="lg"
+        variant="warning"
+        tooltip="on"
         onChange={onChange}
       />
     </Container>
