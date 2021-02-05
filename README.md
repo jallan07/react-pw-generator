@@ -10,11 +10,20 @@ A password generator web app that measures the security and strength of each pas
 
 ## **Table of Contents**
 
-1. [Technologies](#Technologies)
-2. [Installation](#Installation)
-3. [License](#License)
-4. [Contributions](#Contributions)
-5. [Author](#Author)
+1. [Status](#Status)
+2. [Technologies](#Technologies)
+3. [Installation](#Installation)
+4. [License](#License)
+5. [Contributions](#Contributions)
+6. [Author](#Author)
+
+---
+
+## **Status**
+
+Deployed on Netlify.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d1ff2e2f-585b-420d-b5e2-51e80e111803/deploy-status)](https://app.netlify.com/sites/react-pw-generator/deploys)
 
 ---
 
