@@ -24,6 +24,8 @@ function PasswordGenerator() {
     const numbers = '01234567890';
     const symbols = '!@#$%^&*()+_-=.,/|~`';
 
+    let password;
+
     if (charSetState.uppercase) {
       charSet += uppercase;
     }
@@ -36,8 +38,17 @@ function PasswordGenerator() {
     if (charSetState.symbols) {
       charSet += symbols;
     }
+    if (
+      !charSetState.uppercase &&
+      !charSetState.lowercase &&
+      !charSetState.numbers &&
+      !charSetState.symbols
+    ) {
+      alert('Please select at least one character set.');
+      return;
+    }
 
-    let password = await RandomCharSelect(lengthState, charSet);
+    password = await RandomCharSelect(lengthState, charSet);
     let securityCheck = await hsimp(password);
 
     setSecurityState(securityCheck);
