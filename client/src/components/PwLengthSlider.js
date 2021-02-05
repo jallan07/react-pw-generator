@@ -10,7 +10,7 @@ const PwLengthSlider = ({ value, tooltipLabel, onChange }) => {
         value={value}
         tooltipLabel={tooltipLabel}
         min={8}
-        max={36}
+        max={28}
         size="lg"
         variant="warning"
         tooltip="on"

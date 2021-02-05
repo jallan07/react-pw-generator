@@ -15,6 +15,7 @@ function PasswordGenerator() {
     symbols: true
   });
   const [passwordState, setPasswordState] = useState('');
+  const [securityState, setSecurityState] = useState();
 
   const generatePw = async () => {
     let charSet = '';
@@ -37,9 +38,11 @@ function PasswordGenerator() {
     }
 
     let password = await RandomCharSelect(lengthState, charSet);
-    setPasswordState(password);
     let securityCheck = await hsimp(password);
-    console.log(securityCheck);
+
+    setSecurityState(securityCheck);
+    setPasswordState(password);
+
     return password;
   };
 
@@ -50,17 +53,19 @@ function PasswordGenerator() {
 
   return (
     <>
+      <h4
+        className="my-3 px-2 py-4 text-center align-middle"
+        style={{ background: '#0D2B37' }}
+      >
+        {passwordState ? passwordState : '*************'}
+      </h4>
+
       <Form>
-        <Form.Group>
-          <h4 className="py-2 text-center">
-            {passwordState ? passwordState : '*************'}
-          </h4>
-        </Form.Group>
-        <Row>
-          <Form.Group className="d-flex justify-content-center mx-auto">
+        <Row className="mt-4">
+          <Form.Group className="d-flex justify-content-center text-center mx-auto">
             <CharSetToggle
               defaultChecked={charSetState.uppercase}
-              className="mx-3 col-md-6"
+              className="col-md-6"
               type="switch"
               id="uppercase"
               label="UPPERCASE"
@@ -72,7 +77,7 @@ function PasswordGenerator() {
             />
             <CharSetToggle
               defaultChecked={charSetState.numbers}
-              className="mx-3 col-md-6"
+              className="col-md-6"
               type="switch"
               id="numbers"
               label="NUMBERS"
@@ -85,10 +90,10 @@ function PasswordGenerator() {
           </Form.Group>
         </Row>
         <Row>
-          <Form.Group className="d-flex justify-content-center mx-auto">
+          <Form.Group className="d-flex justify-content-center text-center mx-auto">
             <CharSetToggle
               defaultChecked={charSetState.lowercase}
-              className="mx-3 col-md-6"
+              className="col-md-6"
               type="switch"
               id="lowercase"
               label="LOWERCASE"
@@ -100,7 +105,7 @@ function PasswordGenerator() {
             />
             <CharSetToggle
               defaultChecked={charSetState.symbols}
-              className="mx-3 col-md-6"
+              className="col-md-6"
               type="switch"
               id="symbols"
               label="SYMBOLS"
@@ -133,11 +138,20 @@ function PasswordGenerator() {
           >
             CREATE PASSWORD
           </Button>
-          <Button className="mx-3" variant="secondary">
-            COPY PASSWORD
-          </Button>
         </Row>
       </Form>
+
+      {securityState ? (
+        <Container>
+          <Row className="justify-content-center">
+            <h5 className="col-md-9 text-center">
+              It would take a computer{' '}
+              <strong>{securityState.time.toUpperCase()}</strong> to crack your
+              password.
+            </h5>
+          </Row>
+        </Container>
+      ) : null}
     </>
   );
 }
